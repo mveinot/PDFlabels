@@ -1,101 +1,38 @@
 <?php
 
 // if the name was entered "Last, First", flip it around and remove the comma
-function normalize_name($name)
+function normalize_name($name, $first_only)
 {
+        $full_name = '';
+
         if (strpos($name, ',') !== FALSE)
         {
                 preg_match('/^(.*),\s*(.*)$/',$name,$matches);
-                $full_name = "$matches[2] $matches[1]";
+                if ($first_only == "on") {
+                        $full_name = "$matches[2]";
+                } else {
+                        $full_name = "$matches[2] $matches[1]";
+                }
         } else
         {
-                $full_name = $name;
+                if ($first_only == "on") {
+                        $split_name = explode(' ', $name);
+                        $full_name = $split_name[0];
+                } else { 
+                        $full_name = $name;
+                }
         }
 
         return $full_name;
 }
 
 function em($word) {
-	$word = str_replace("@","%40",$word);
-	$word = str_replace("`","%60",$word);
-	$word = str_replace("¢","%A2",$word);
-	$word = str_replace("£","%A3",$word);
-	$word = str_replace("¥","%A5",$word);
-	$word = str_replace("|","%A6",$word);
-	$word = str_replace("«","%AB",$word);
-	$word = str_replace("¬","%AC",$word);
-	$word = str_replace("¯","%AD",$word);
-	$word = str_replace("º","%B0",$word);
-	$word = str_replace("±","%B1",$word);
-	$word = str_replace("ª","%B2",$word);
-	$word = str_replace("µ","%B5",$word);
-	$word = str_replace("»","%BB",$word);
-	$word = str_replace("¼","%BC",$word);
-	$word = str_replace("½","%BD",$word);
-	$word = str_replace("¿","%BF",$word);
-	$word = str_replace("À","%C0",$word);
-	$word = str_replace("Á","%C1",$word);
-	$word = str_replace("Â","%C2",$word);
-	$word = str_replace("Ã","%C3",$word);
-	$word = str_replace("Ä","%C4",$word);
-	$word = str_replace("Å","%C5",$word);
-	$word = str_replace("Æ","%C6",$word);
-	$word = str_replace("Ç","%C7",$word);
-	$word = str_replace("È","%C8",$word);
-	$word = str_replace("É","%C9",$word);
-	$word = str_replace("Ê","%CA",$word);
-	$word = str_replace("Ë","%CB",$word);
-	$word = str_replace("Ì","%CC",$word);
-	$word = str_replace("Í","%CD",$word);
-	$word = str_replace("Î","%CE",$word);
-	$word = str_replace("Ï","%CF",$word);
-	$word = str_replace("Ð","%D0",$word);
-	$word = str_replace("Ñ","%D1",$word);
-	$word = str_replace("Ò","%D2",$word);
-	$word = str_replace("Ó","%D3",$word);
-	$word = str_replace("Ô","%D4",$word);
-	$word = str_replace("Õ","%D5",$word);
-	$word = str_replace("Ö","%D6",$word);
-	$word = str_replace("Ø","%D8",$word);
-	$word = str_replace("Ù","%D9",$word);
-	$word = str_replace("Ú","%DA",$word);
-	$word = str_replace("Û","%DB",$word);
-	$word = str_replace("Ü","%DC",$word);
-	$word = str_replace("Ý","%DD",$word);
-	$word = str_replace("Þ","%DE",$word);
-	$word = str_replace("ß","%DF",$word);
-	$word = str_replace("à","%E0",$word);
-	$word = str_replace("á","%E1",$word);
-	$word = str_replace("â","%E2",$word);
-	$word = str_replace("ã","%E3",$word);
-	$word = str_replace("ä","%E4",$word);
-	$word = str_replace("å","%E5",$word);
-	$word = str_replace("æ","%E6",$word);
-	$word = str_replace("ç","%E7",$word);
-	$word = str_replace("è","%E8",$word);
-	$word = str_replace("é","%E9",$word);
-	$word = str_replace("ê","%EA",$word);
-	$word = str_replace("ë","%EB",$word);
-	$word = str_replace("ì","%EC",$word);
-	$word = str_replace("í","%ED",$word);
-	$word = str_replace("î","%EE",$word);
-	$word = str_replace("ï","%EF",$word);
-	$word = str_replace("ð","%F0",$word);
-	$word = str_replace("ñ","%F1",$word);
-	$word = str_replace("ò","%F2",$word);
-	$word = str_replace("ó","%F3",$word);
-	$word = str_replace("ô","%F4",$word);
-	$word = str_replace("õ","%F5",$word);
-	$word = str_replace("ö","%F6",$word);
-	$word = str_replace("÷","%F7",$word);
-	$word = str_replace("ø","%F8",$word);
-	$word = str_replace("ù","%F9",$word);
-	$word = str_replace("ú","%FA",$word);
-	$word = str_replace("û","%FB",$word);
-	$word = str_replace("ü","%FC",$word);
-	$word = str_replace("ý","%FD",$word);
-	$word = str_replace("þ","%FE",$word);
-	$word = str_replace("ÿ","%FF",$word);
 
-	return $word;
+        $search = array('@', '`', '¢', '£', '¥', '|', '«', '¬', '¯', 'º', '±', 'ª', 'µ', '»', '¼', '½', '¿', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'þ', 'ÿ');
+
+        $replace = array('%40', '%60', '%A2', '%A3', '%A5', '%A6', '%AB', '%AC', '%AD', '%B0', '%B1', '%B2', '%B5', '%BB', '%BC', '%BD', '%BF', '%C0', '%C1', '%C2', '%C3', '%C4', '%C5', '%C6', '%C7', '%C8', '%C9', '%CA', '%CB', '%CC', '%CD', '%CE', '%CF', '%D0', '%D1', '%D2', '%D3', '%D4', '%D5', '%D6', '%D8', '%D9', '%DA', '%DB', '%DC', '%DD', '%DE', '%DF', '%E0', '%E1', '%E2', '%E3', '%E4', '%E5', '%E6', '%E7', '%E8', '%E9', '%EA', '%EB', '%EC', '%ED', '%EE', '%EF', '%F0', '%F1', '%F2', '%F3', '%F4', '%F5', '%F6', '%F7', '%F8', '%F9', '%FA', '%FB', '%FC', '%FD', '%FE', '%FF');
+
+        $escaped = str_replace($search, $replace, $word);
+
+	return $escaped;
 }
