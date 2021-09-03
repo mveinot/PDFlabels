@@ -17,6 +17,9 @@ function decimal_to_fraction($fraction) {
   }
 }
 
+$names = rtrim(file_get_contents('./names.current'));
+$subjects = rtrim(file_get_contents('./subjects.current'));
+
 # Borrowed from: http://www.php.net/manual/en/function.gmp-gcd.php#69189
 function gcd($a,$b) {
   return ($a % $b) ? gcd($b,$a % $b) : $b;
@@ -36,7 +39,7 @@ body {
 }
 
 #content {
-	width: 450px;
+	width: 650px;
 	margin: 50px auto;
 	background-color: #cfcfcf;
 	padding: 10px;
@@ -50,10 +53,12 @@ body {
 	<table>
 		<tr>
 			<td>Names list</td>
+                        <td>Subjects</td>
 			<td>Label style</td>
 		</tr>
 		<tr>
-			<td><textarea name="names_list" rows="30" cols="25"></textarea></td>
+			<td><textarea name="names_list" rows="30" cols="25"><?=$names?></textarea></td>
+			<td><textarea name="subjects_list" rows="30" cols="25"><?=$subjects?></textarea></td>
 			<td valign="top"><select name="style">
 <?php
 foreach ($styles as $name => $style) {
@@ -66,6 +71,8 @@ $width = decimal_to_fraction($style['width']);
 }
 ?>
 			</select><br />
+                        <input type="checkbox" id="first_only" name="first_only">
+                        <label for="first_only">Only print first name</label><br />
 			<input type="submit" name="submit" value="Generate" />
 			</td>
 		</tr>
